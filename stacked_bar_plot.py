@@ -112,47 +112,44 @@ if __name__ == '__main__':
     EXAMPLE_DATA_PATH = r'.\electricity-prod-source-stacked.csv'
     example_data_df = pd.read_csv(EXAMPLE_DATA_PATH)
     # specify and modify dependent variable names (optional)
-    example_dependent_variable_names = \
-        ['other renewables', 'bioenergy', 'solar', 'wind',
-         'hydro', 'nuclear', 'oil', 'gas', 'coal']
     example_data_df = \
-        Preprocessor.modify_column_names(example_data_df, example_dependent_variable_names,
+        Preprocessor.modify_column_names(example_data_df,
+                                         ['other renewables', 'bioenergy', 'solar', 'wind',
+                                          'hydro', 'nuclear', 'oil', 'gas', 'coal'],
                                          list(range(3, len(example_data_df.columns))))
-
-    # --- preprocessing ---
-    example_preprocessor = \
+    example_data = \
         Preprocessor(example_data_df, example_data_df.columns[0], example_data_df.columns[2])
     # preprocessing (location bins example)
-    example_preprocessor.get_dependent_inputs('location_bins',
-                                              global_variable_list=['Chile', 'Japan', 'Norway',
-                                                                    'Senegal', 'Thailand',
-                                                                    'Turkey', 'Uruguay'],
-                                              group_variable_range=[2005, 2019])
+    example_data.get_dependent_results('location_bins',
+                                        global_variable_list=['Chile', 'Japan', 'Norway',
+                                                              'Senegal', 'Thailand',
+                                                              'Turkey', 'Uruguay'],
+                                        group_variable_range=[2005, 2019])
     # # preprocessing (time bins example)
-    # example_preprocessor.get_dependent_inputs('time_bins',
-    #                                           bin_num=7,
-    #                                           global_value='Canada',
-    #                                           group_variable_range=[2005, 2019])
-    # specify plotting input to assign dependent variable label (optional)
-    # ('dependent_input' or 'percentage_input')
-    example_preprocessor.select_input('percentage_input')
+    # example_data.get_dependent_results('time_bins',
+    #                                    bin_num=7,
+    #                                    global_value='Canada',
+    #                                    group_variable_range=[2005, 2019])
+    # specify plotting result to assign dependent variable label (optional)
+    # ('dependent_result' or 'percentage_result')
+    example_data.select_result('percentage_result')
 
     # palette setup (optional)
     cmap = pypalettes.load_cmap('rauw')
     # if palette contains enough colors, assign first colors to palette list
-    if cmap.N >= len(example_preprocessor.dependent_input):
+    if cmap.N >= len(example_data.prep_results["dependent"]):
         # return colors as a list of hexadecimal values
-        pypalettes_list = cmap.colors[:len(example_preprocessor.dependent_input)]
+        pypalettes_list = cmap.colors[:len(example_data.prep_results["dependent"])]
         # adjust palette color order as needed
         pypalettes_list = get_seeded_shuffle(pypalettes_list, 193)
     else:
-        raise ValueError("Selected palette size smaller than dependent input.")
+        raise ValueError("Selected palette size smaller than dependent result.")
 
     # --- plot data ---
-    generate_plot(example_preprocessor.selected_input,
-                  bin_names_list=example_preprocessor.bin_names_list,
-                  dependent_variable_names=example_preprocessor.data_df.columns.tolist()[3:],
-                  dependent_variable_label=example_preprocessor.dependent_variable_label,
+    generate_plot(example_data.prep_results["selected"],
+                  bin_names_list=example_data.bin_data["names_list"],
+                  dependent_variable_names=example_data.data_df.columns.tolist()[3:],
+                  dependent_variable_label=example_data.prep_results["dependent_label"],
                   palette_list=pypalettes_list)
 
     # save figure
