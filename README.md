@@ -1,5 +1,5 @@
 # Stacked Bar Plot
-Script to generate a a stacked bar plot. The plot uses the electricity production dataset for demonstration.
+Script to generate a stacked bar plot. The plot uses the electricity production dataset for demonstration.
 
 The dataset used for demonstration is featured in the following references:
 
