@@ -1,13 +1,20 @@
 # Stacked Bar Plot
 Script to generate a stacked bar plot. The plot uses the electricity production dataset ([Ritchie & Rosado, 2020](https://ourworldindata.org/electricity-mix?gsid=5aa1a303-5872-479b-ab4b-042d60cd9684); [Sur, 2024](https://www.kaggle.com/datasets/shreyasur965/hgfgfdgdsa)) for demonstration.
 
-installation:
+Environment setup:
+
+```bash
+conda create -n myenv python=3.11
+conda activate myenv
+```
+
+Dependencies installation:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-usage:
+Usage:
 
 ```bash
 python stacked_bar_plot.py
